@@ -94,6 +94,41 @@ document.addEventListener("DOMContentLoaded", function () {
     return Math.round((correctWords / seconds) * 60);
   }
 
+  // Helper function to escape HTML special characters to prevent injection.
+  function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Highlight the sample text in real-time based on what the user has typed.
+  // Correctly typed words are shown in blue, incorrectly typed words in red.
+  function highlightSampleText() {
+    const sampleWords = currentSample.trim().split(/\s+/);
+    const typedText = userInput.value;
+    const typedWords = typedText.trim().split(/\s+/);
+
+    let highlightedHTML = "";
+
+    for (let i = 0; i < sampleWords.length; i++) {
+      const sampleWord = sampleWords[i];
+      const typedWord = typedWords[i] || "";
+
+      if (typedWord === sampleWord) {
+        // Correct word - highlight in blue
+        highlightedHTML += `<span style="color: blue; font-weight: bold;">${escapeHtml(sampleWord)}</span> `;
+      } else if (typedWord.length > 0) {
+        // Incorrect word - highlight in red
+        highlightedHTML += `<span style="color: red; font-weight: bold;">${escapeHtml(sampleWord)}</span> `;
+      } else {
+        // Not yet typed - keep normal color
+        highlightedHTML += `<span>${escapeHtml(sampleWord)}</span> `;
+      }
+    }
+
+    sampleText.innerHTML = highlightedHTML;
+  }
+
   // Start the typing test.
   // This clears the input, enables typing, and records the start time.
   function startTest() {
@@ -108,11 +143,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     startBtn.disabled = true;
     stopBtn.disabled = false;
-    retryBtn.disabled = false;
+  
 
     timeOutput.textContent = "Time: 0s";
     wpmOutput.textContent = "WPM: 0";
-    updateResultLevel();
+   
   }
 
   // Stop the test and calculate the final results.
@@ -124,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
-    const typedText = userInput.value || "";
+    const typedText = userInput.value ;
     const correctWords = countCorrectWords(currentSample, typedText);
     const wpm = calculateWpm(correctWords, elapsedSeconds);
 
@@ -148,21 +183,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     startBtn.disabled = false;
     stopBtn.disabled = true;
-    retryBtn.disabled = false;
+  
+   
 
     startTime = null;
     timeOutput.textContent = "Time: 0s";
     wpmOutput.textContent = "WPM: 0";
-    updateResultLevel();
+    updateSampleText();
+    
+    // Reset sample text highlighting when the test is reset
+    sampleText.innerHTML = escapeHtml(currentSample);
   }
 
   // Add event listeners for user actions.
   // The difficulty selector loads a new sample text when changed.
   // The buttons control test start, stop, and reset behavior.
+  // The input field triggers real-time highlighting as the user types.
   difficultySelect.addEventListener("change", updateSampleText);
   startBtn.addEventListener("click", startTest);
   stopBtn.addEventListener("click", stopTest);
   retryBtn.addEventListener("click", resetTest);
+  userInput.addEventListener("input", highlightSampleText);
 
   // Initialize the page with a sample text and reset the results.
   updateSampleText();
