@@ -1,11 +1,111 @@
+v
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <!-- Basic page setup -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Page title shown in browser tab -->
+    <title>TypeRacer</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts: Alegreya for headings, Nunito for body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
 </head>
+
 <body>
-    
+
+    <!-- Header  Section -->
+    <header class="site-header py-3">
+        <div class="container">
+            <!-- Main header heading -->
+            <h1 class="display-6 fw-bold mb-3">TypeRacer</h1>
+
+            <!-- Call-to-action button -->
+            <a href="#test-area" class="btn btn-light btn-lg">instructions</a>
+        </div>
+    </header>
+
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+
+            <!----------------- Responsive feature cards-------------------------->
+            <!------------------------------------------typing box-->
+            <div class="row g-4 justify-content-center">
+                <div class="col-11 col-md-8">
+                    <div class="feature-card" style="max-width: 800px;">
+
+                        <!-- Difficulty selector -->
+                        <div class="input-group mb-4">
+                            <label class="input-group-text difficulty-label" for="difficulty">Select Difficulty</label>
+                            <select id="difficulty" class="form-select">
+                                <option>Easy</option>
+                                <option>Medium</option>
+                                <option>Hard</option>
+                            </select>
+                        </div>
+                        <!----------------------- Instruction text -->
+                        <div class="test-area">
+                            <p class="lead">Test your typing speed by typing the text shown below:</p>
+                            <div class="message-box mb-3 p-3 border" id="sample-text">
+                                The cat sat on the mat.
+                            </div>
+                        </div>
+
+                        <!-- Message input field -->
+                        <div class="mb-3">
+                            <label class="form-label visually-hidden" for="user-input">Type Here</label>
+                            <textarea class="form-control" id="user-input" rows="6"
+                                placeholder="Click the start button to begin the test"></textarea>
+                        </div>
+
+                        <!-- Buttons centered under message -->
+                        <div class="mb-3 text-center button-group">
+                            <button class="btn btn-lg btn-outline-orange" id="start-btn">Start</button>
+                            <button class="btn btn-lg btn-outline-orange" id="stop-btn">Stop</button>
+                            <button class="btn btn-lg btn-outline-orange" id="retry-btn">Retry</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!----------------- Results column -->
+                <div class="col-11 col-md-4">
+
+                    <!-- Results box -->
+                    <div class="results-box">
+                        <!-- Results title -->
+                        <h2>Results</h2>
+
+                        <!-- Difficulty level -->
+                        <p id="level-result">Level: Easy</p>
+
+                        <!-- Time result -->
+                        <p id="time-result">Time: 0s</p>
+
+                        <!-- Words per minute result -->
+                        <p id="wpm-result">WPM: 0</p>
+                    </div>
+
+                </div>
+            </div>
+    </section>
+
+<script src="assets/js/script.js"></script> 
+
 </body>
+
 </html>

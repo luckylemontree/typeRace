@@ -1,0 +1,160 @@
+/*---------------- General body styling */
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #fff;
+    color: #222;
+}
+
+/* Apply Alegreya font to headings and brand text */
+h1,
+h2,
+h3,
+.brand-text {
+    font-family: 'Alegreya', serif;
+}
+
+/*--------------------------- Header  area */
+.site-header {
+    min-height: 25vh;
+    background-color: #ff8400;
+    color: white;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+/* Style for the header button */
+.site-header .btn-light {
+    font-weight: 500;
+    padding: 0.1rem 0.7rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+/* Shared card styling for features, test area, and results */
+.feature .feature-card,
+.test-card,
+.results-card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    height: 100%;
+}
+
+/* Sample typing text display area */
+.test-display {
+    background-color: #f1f3f5;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    min-height: 140px;
+    line-height: 1.8;
+}
+
+/* Typing textarea styling */
+textarea.form-control {
+    min-height: 140px;
+    border-radius: 0.75rem;
+}
+
+/* Individual stat boxes in results section */
+.stat-box {
+    background-color: #fff3e6;
+    border-left: 4px solid #ff8400;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Spacing under section headings */
+.section-title {
+    margin-bottom: 1rem;
+}
+
+/*---------------------------------------- typing box */
+
+/* Light gray background for the difficulty label */
+.difficulty-label {
+    background-color: #e6e5e5;
+    /* Light gray */
+    padding: 6px 10px;
+    /* Space inside the label */
+
+}
+
+/* Message display box */
+.message-box {
+    border: 1px solid #c8c6c6;
+    /* Light gray  border */
+
+}
+
+/* Button group layout */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    /* Bigger space between buttons */
+    flex-wrap: wrap;
+}
+
+/* Orange outline buttons */
+.btn-outline-orange {
+    border: 2px solid #ff8400;
+    color: #ff8400;
+    background-color: white;
+    border-radius: 5px;
+
+}
+
+/* Button hover effect */
+.btn-outline-orange:hover {
+    background-color: #ff8400;
+    color: white;
+}
+
+/* Rounded corners for select, message box, and textarea */
+.difficulty-label,
+.form-select,
+.message-box,
+textarea.form-control {
+
+    border-radius: 3px;
+    /* Rounded corners */
+}
+
+/*---------------------------- Results box style */
+.results-box {
+
+    border-radius: 10%;
+    /* Rounded corners using percentage */
+    box-shadow: 0 0 12px orange;
+    /* Soft shadow */
+    text-align: center;
+    /* Center all text */
+    border-radius: 5px;
+    /* Rounded corners */
+    padding: 20px;
+    /* Space inside the box */
+    background-color: #fff;
+    /* White background */
+}
+
+/* Results title */
+.results-box h2 {
+    margin-bottom: 15px;
+    /* Space below heading */
+}
+
+/* Paragraph spacing */
+.results-box p {
+    margin-bottom: 10px;
+    /* Space between paragraphs */
+    font-size: 16px;
+    /* Text size */
+}
+
+/* Remove extra space from last paragraph */
+.results-box p:last-child {
+    margin-bottom: 0;
+}
