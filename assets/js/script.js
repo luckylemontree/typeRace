@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const levelOutput = document.getElementById("level-result");
   const timeOutput = document.getElementById("time-result");
   const wpmOutput = document.getElementById("wpm-result");
+  const hasStartStop = Boolean(startBtn && stopBtn);
 
   // This variable stores the timestamp when the user begins typing.
   // It is later used to compute the elapsed time for the WPM calculation.
@@ -40,6 +41,46 @@ document.addEventListener("DOMContentLoaded", function () {
   // This variable stores the sample text currently shown to the user.
   // We compare the user's final typed text against this exact sample.
   let currentSample = "";
+
+  // Current UI state for the typing test.
+  // idle   -> waiting for the first keystroke
+  // running -> timer is active
+  // completed -> test finished and results are shown
+  let testState = "idle";
+
+  // Change the UI state and update controls accordingly.
+  function updateUiState(state) {
+    testState = state;
+
+    if (state === "idle") {
+      userInput.disabled = false;
+      userInput.placeholder = "Type here to start the test";
+      if (hasStartStop) {
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        startBtn.textContent = "Start";
+      }
+      retryBtn.disabled = false;
+    } else if (state === "running") {
+      userInput.disabled = false;
+      userInput.placeholder = "Typing... press Enter to stop";
+      if (hasStartStop) {
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        startBtn.textContent = "Start";
+      }
+      retryBtn.disabled = true;
+    } else if (state === "completed") {
+      userInput.disabled = true;
+      userInput.placeholder = "Test complete. Press Retry to try again";
+      if (hasStartStop) {
+        startBtn.disabled = true;
+        stopBtn.disabled = true;
+        startBtn.textContent = "Start";
+      }
+      retryBtn.disabled = false;
+    }
+  }
 
   // Choose a random sample text for the selected difficulty.
   // This function updates both the displayed sample text and the
@@ -130,80 +171,88 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Start the typing test.
-  // This clears the input, enables typing, and records the start time.
-  function startTest() {
-    // clear any previous text
-    userInput.value = "";
+  // When triggered by a button, this clears previous input.
+  // When triggered by the first keystroke, it keeps the first character.
+  function startTest({ clearInput = false } = {}) {
+    if (testState === "running") {
+      return;
+    }
 
-    // allow typing only while the test is running
+    if (clearInput) {
+      userInput.value = "";
+    }
+
     userInput.disabled = false;
     userInput.focus();
 
-    startTime = Date.now();
-
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
-  
+    if (!startTime) {
+      startTime = Date.now();
+    }
 
     timeOutput.textContent = "Time: 0s";
     wpmOutput.textContent = "WPM: 0";
-   
+    updateUiState("running");
   }
 
   // Stop the test and calculate the final results.
   // This reads the typed text, computes elapsed seconds, counts correct words,
   // and then calculates the rounded WPM value.
   function stopTest() {
-    if (!startTime) {
+    if (testState !== "running" || !startTime) {
       return;
     }
 
     const elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
-    const typedText = userInput.value ;
+    const typedText = userInput.value;
     const correctWords = countCorrectWords(currentSample, typedText);
     const wpm = calculateWpm(correctWords, elapsedSeconds);
 
     timeOutput.textContent = `Time: ${formatTime(elapsedSeconds)}`;
     wpmOutput.textContent = `WPM: ${wpm}`;
 
-    // Disable the typing area when the test is stopped.
     userInput.disabled = true;
-
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
     startTime = null;
+    updateUiState("completed");
   }
 
   // Reset the test state back to its initial values.
-  // This clears the text area, disables typing again, and resets result labels.
+  // This clears the text area, resets the timer and results, and loads a new sample.
   function resetTest() {
-    // disable typing when the test is not running
-    userInput.disabled = true;
     userInput.value = "";
-
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-  
-   
-
     startTime = null;
     timeOutput.textContent = "Time: 0s";
     wpmOutput.textContent = "WPM: 0";
     updateSampleText();
-    
-    // Reset sample text highlighting when the test is reset
     sampleText.innerHTML = escapeHtml(currentSample);
+    updateUiState("idle");
   }
 
   // Add event listeners for user actions.
   // The difficulty selector loads a new sample text when changed.
-  // The buttons control test start, stop, and reset behavior.
-  // The input field triggers real-time highlighting as the user types.
+  // The buttons control manual start, stop, and reset behavior.
+  // The input field triggers the test start on first keystroke.
   difficultySelect.addEventListener("change", updateSampleText);
-  startBtn.addEventListener("click", startTest);
-  stopBtn.addEventListener("click", stopTest);
+  if (startBtn) {
+    startBtn.addEventListener("click", () => startTest({ clearInput: true }));
+  }
+  if (stopBtn) {
+    stopBtn.addEventListener("click", stopTest);
+  }
   retryBtn.addEventListener("click", resetTest);
   userInput.addEventListener("input", highlightSampleText);
+  userInput.addEventListener("keydown", function (event) {
+    if (testState === "idle") {
+      const isModifierKey = event.ctrlKey || event.metaKey || event.altKey;
+      if (!isModifierKey && event.key !== "Enter" && event.key !== "Tab") {
+        startTest();
+      }
+    }
+
+    if (testState === "running" && event.key === "Enter") {
+      event.preventDefault();
+      stopTest();
+    }
+  });
 
   // Initialize the page with a sample text and reset the results.
   updateSampleText();
