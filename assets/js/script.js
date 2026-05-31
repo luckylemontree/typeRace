@@ -26,13 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const difficultySelect = document.getElementById("difficulty");
   const sampleText = document.getElementById("sample-text");
   const userInput = document.getElementById("user-input");
-  const startBtn = document.getElementById("start-btn");
-  const stopBtn = document.getElementById("stop-btn");
   const retryBtn = document.getElementById("retry-btn");
   const levelOutput = document.getElementById("level-result");
   const timeOutput = document.getElementById("time-result");
   const wpmOutput = document.getElementById("wpm-result");
-  const hasStartStop = Boolean(startBtn && stopBtn);
 
   // This variable stores the timestamp when the user begins typing.
   // It is later used to compute the elapsed time for the WPM calculation.
@@ -55,29 +52,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (state === "idle") {
       userInput.disabled = false;
       userInput.placeholder = "Type here to start the test";
-      if (hasStartStop) {
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        startBtn.textContent = "Start";
-      }
       retryBtn.disabled = false;
     } else if (state === "running") {
       userInput.disabled = false;
       userInput.placeholder = "Typing... press Enter to stop";
-      if (hasStartStop) {
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
-        startBtn.textContent = "Start";
-      }
       retryBtn.disabled = true;
     } else if (state === "completed") {
       userInput.disabled = true;
       userInput.placeholder = "Test complete. Press Retry to try again";
-      if (hasStartStop) {
-        startBtn.disabled = true;
-        stopBtn.disabled = true;
-        startBtn.textContent = "Start";
-      }
       retryBtn.disabled = false;
     }
   }
@@ -229,15 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Add event listeners for user actions.
   // The difficulty selector loads a new sample text when changed.
-  // The buttons control manual start, stop, and reset behavior.
   // The input field triggers the test start on first keystroke.
   difficultySelect.addEventListener("change", updateSampleText);
-  if (startBtn) {
-    startBtn.addEventListener("click", () => startTest({ clearInput: true }));
-  }
-  if (stopBtn) {
-    stopBtn.addEventListener("click", stopTest);
-  }
   retryBtn.addEventListener("click", resetTest);
   userInput.addEventListener("input", highlightSampleText);
   userInput.addEventListener("keydown", function (event) {

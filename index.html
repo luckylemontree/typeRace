@@ -21,6 +21,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -31,8 +34,10 @@
             <!-- Main header heading -->
             <h1 class="display-6 fw-bold mb-3">TypeRacer</h1>
 
-            <!-- Call-to-action button -->
-            <a href="#test-area" class="btn btn-light btn-lg">instructions</a>
+            <!-- Instructions button -->
+            <button type="button" class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#instructionsModal">
+                instructions
+            </button>
         </div>
     </header>
 
@@ -103,7 +108,53 @@
             </div>
     </section>
 
-<script src="assets/js/script.js"></script> 
+<script src="assets/js/script.js"></script>
+
+<!-- Instructions Modal -->
+<div class="modal fade" id="instructionsModal" tabindex="-1" aria-labelledby="instructionsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="instructionsModalLabel">How to Use TypeRacer</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <h5>Welcome to TypeRacer!</h5>
+        <p>TypeRacer is a typing speed test application that measures your words per minute (WPM) accuracy.</p>
+        
+        <h6 class="mt-4">Getting Started:</h6>
+        <ol>
+          <li><strong>Select Difficulty:</strong> Choose between Easy, Medium, or Hard from the dropdown menu.</li>
+          <li><strong>Read the Text:</strong> A sample text will appear in the blue box above the input field.</li>
+          <li><strong>Start Typing:</strong> Simply begin typing the sample text. The timer will automatically start on your first keystroke.</li>
+          <li><strong>Stop the Test:</strong> Press <kbd>Enter</kbd> to complete the test and see your results.</li>
+          <li><strong>Retry:</strong> Click the Retry button to reset and try again with a new text sample.</li>
+        </ol>
+        
+        <h6 class="mt-4">How Results are Calculated:</h6>
+        <ul>
+          <li><strong>Time:</strong> Measured in seconds from your first keystroke to when you press Enter.</li>
+          <li><strong>Correct Words:</strong> Words you typed exactly matching the sample text are counted as correct.</li>
+          <li><strong>WPM:</strong> Words Per Minute is calculated by taking the number of correct words divided by the time in minutes.</li>
+        </ul>
+        
+        <h6 class="mt-4">Tips for Better Scores:</h6>
+        <ul>
+          <li>Focus on accuracy first, speed will follow naturally.</li>
+          <li>Keep your hands in proper typing position on the keyboard.</li>
+          <li>Practice regularly to improve both speed and accuracy.</li>
+          <li>Use the correct fingers for each key to develop muscle memory.</li>
+        </ul>
+      </div>
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 
